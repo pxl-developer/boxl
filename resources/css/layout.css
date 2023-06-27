@@ -1,0 +1,24 @@
+.authenticated{
+    display: flex;
+    padding: 20px;
+}
+.authenticated .body-content{
+    flex: 1;
+}
+.body-content{
+    padding-left: 20px;
+}
+
+@media(max-width: 720px){
+    .authenticated{
+        flex-direction: column;
+    }
+    .body-content {
+        padding-left: 0;
+    }
+}
+@media(max-width: 1200px){
+    .body-content {
+        padding-left: 0;
+    }
+}

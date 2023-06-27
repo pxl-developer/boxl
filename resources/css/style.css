@@ -1,0 +1,39 @@
+.fg-welcome{
+    font-family: Acumin;
+    font-weight: 200;
+    font-size: 4em;
+
+    margin-top: auto;
+
+    padding-left: 20px;
+}
+
+
+
+/**
+*
+*   Login page 
+*
+*/
+.login-bg{
+    position: absolute;
+    z-index: 0;
+}
+.login-card{
+    z-index: 1;
+    padding: 20px;
+    color: #0E0C22;
+    border-radius: 25px;
+    box-shadow: 0 0 10px #0000001a;
+    backdrop-filter: blur(5px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.274);
+}
+.login-input{
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 5px #0e0c221e;
+}
+.login-input:focus-visible{
+    outline: none;
+}

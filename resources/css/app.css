@@ -1,0 +1,118 @@
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: Bahij;
+    src: url('../js/Fonts/Bahij.ttf');
+}
+@font-face {
+    font-family: Acumin;
+    src: url('../js/Fonts/Acumin.ttf');
+}
+
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    color: #FFFFFF;
+    background-image: linear-gradient(#211D41, #171430);
+}
+main{
+    height: 100%;
+    display: flex;
+    font-weight: 100;
+    flex-direction: column;
+}
+button{
+    color: #FFFFFF;
+    background-color: transparent;
+}
+h1, h2{
+    font-weight: 100;
+}
+@media(max-width: 1200px){
+    h1{
+        font-size: 1.4em;
+    }
+    h2{
+        font-size: 1.1em;
+    }
+    span{
+        font-size: .8em;
+    }
+}
+
+@media(max-width: 1360px){
+    h1{
+        font-size: 1.6em;
+    }
+    h2{
+        font-size: 1.2em;
+    }
+    span{
+        font-size: .8em;
+    }
+}
+
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    border-radius: 15px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #0E0C22;
+    border-radius: 10px;
+}
+
+
+
+.font-sans{
+    font-weight: 300;
+    font-family: 'Segoe UI', Acumin;
+}
+.bg-boxl{
+    background-color: #f8f8f8;
+}
+.fg-min-screen-height{
+    min-height: 100vh;
+}
+.fg-max-screen-height{
+    max-height: 100vh;
+}
+.fg-flex{
+    display: flex;
+}
+.fg-v-center{
+    align-items: center;
+}
+.fg-h-center{
+    justify-content: center;
+}
+.fg-dir-col{
+    flex-direction: column;
+}
+.fg-margin-auto{
+    margin-top: auto;
+}
+.fg-margin-bottom{
+    margin-bottom: 10px;
+}
+.fg-padding{
+    padding: 20px;
+}
+.fg-overflow-scroll{
+    overflow-y: scroll;
+}

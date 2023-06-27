@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Models;
+
+use App\Models\Order;
+use DateTimeInterface;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+class Payment extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'amount',
+        'image',
+        'transaction_id',
+        'transaction_status',
+    ];
+
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class, 'id', 'id_payment');
+    }
+
+    public function serializeDate(DateTimeInterface $date): string
+    {
+        return $date->format('d/m/Y H:i');
+    }
+}
