@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
-            $table->id('transaction_id');
-            $table->float('amount', 8, 2);
-            $table->longText('hash_pix_payment')->nullable();
-            $table->longText('base64_image')->nullable();
-            $table->string('transaction_status');
+        Schema::create('address', function (Blueprint $table) {
+            $table->id();
+            $table->string('cep');
+            $table->string('street_name');
+            $table->string('street_number');
+            $table->string('neighborhood');
+            $table->string('city');
+            $table->string('uf');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('users');
     }
 };
