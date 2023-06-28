@@ -11,7 +11,6 @@ use App\Http\Controllers\PaymentMethods\CreatePayment;
 
 class DashboardController extends Controller
 {
-
     public function index()
     {
         return Inertia::render('Dashboard', [
@@ -22,9 +21,9 @@ class DashboardController extends Controller
     
     public function pay(Request $request)
     {
-        $createPayment = new CreatePayment($order->findOrder());
-
         $order = new OrderController($request->orderID);
+
+        $createPayment = new CreatePayment();
 
         $createPayment->create(new Pix());
     }
