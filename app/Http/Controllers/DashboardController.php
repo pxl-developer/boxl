@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
+use App\Models\User;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PaymentMethods\Pix;
-use App\Http\Controllers\PaymentMethods\CreatePayment;
+use App\Http\Controllers\PaymentMethods\MakePayment;
 
 class DashboardController extends Controller
 {
@@ -15,17 +16,17 @@ class DashboardController extends Controller
     {
         return Inertia::render('Dashboard', [
             'orders' => Order::where('id_user', Auth::user()->id)->get(),
-            /*paymentsData' => Order::where('id_user', Auth::user()->id)->with('payment')->get(),*/
         ]);
     }
     
     public function pay(Request $request)
     {
-        $order = new OrderController($request->orderID);
+        $createPayment = new MakePayment(new Pix());
 
-        $createPayment = new CreatePayment();
-
-        $createPayment->create(new Pix());
+        $createPayment->create(
+            User::find(Auth::user()->id),
+            Order::find($request->orderID)
+        );
     }
 
     public function wallet(){
