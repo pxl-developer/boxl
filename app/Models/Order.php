@@ -13,12 +13,13 @@ class Order extends Model
 
     protected $fillable = [
         'code',
+        'pack_id',
         'order_status',
         'order_total_paid',
         'order_fee',
         'order_cost',
+        'delivery_type',
         'id_user',
-        'id_payment',
     ];
 
     public function payment(): HasOne

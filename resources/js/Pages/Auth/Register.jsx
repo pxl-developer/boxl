@@ -13,6 +13,7 @@ export default function Register() {
         document: '',
         phone: '',
         token: '',
+        cep: '',
         password: '',
         password_confirmation: '',
     });
@@ -52,7 +53,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="document" value="CPF" />
+                    <InputLabel htmlFor="document" value="CPF/CNPJ" />
 
                     <TextInput
                         id="document"

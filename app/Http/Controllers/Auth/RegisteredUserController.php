@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Address;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Events\Registered;
+use App\Providers\RouteServiceProvider;
 
 class RegisteredUserController extends Controller
 {
@@ -40,14 +42,25 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $address_api = Http::get("https://viacep.com.br/ws/{$request->cep}/json/")->object();
+
+        $address = Address::create([
+            'cep' => $address_api->cep,
+            'street_name' => $address_api->logradouro,
+            'street_number' => '0',
+            'neighborhood' => $address_api->bairro,
+            'city' => $address_api->localidade,
+            'uf' => $address_api->uf,
+        ]);
+
         $user = User::create([
+            'authentication_id' => $request->token,
             'name' => $request->name,
+            'document' => $request->document,
             'phone' => $request->phone,
             'email' => $request->email,
-            'cpf' => $request->document,
-            'cep' => $request->cep,
-            'authenticationId' => $request->token,
             'password' => Hash::make($request->password),
+            'id_address' => $address->id,
         ]);
 
         event(new Registered($user));

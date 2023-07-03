@@ -12,11 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->id();
+            $table->id('transaction_id');
             $table->float('amount', 8, 2);
-            $table->longText('image');
-            $table->string('transaction_id');
+            $table->longText('base64_image')->nullable();
+            $table->string('payment_pix')->nullable();
             $table->string('transaction_status');
+            $table->unsignedBigInteger('order_id');
+            $table->foreign('order_id')->references('id')->on('orders');
             $table->timestamps();
         });
     }

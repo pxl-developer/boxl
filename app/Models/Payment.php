@@ -13,10 +13,12 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'amount',
-        'image',
         'transaction_id',
+        'amount',
+        'base64_image',
+        'payment_pix',
         'transaction_status',
+        'order_id',
     ];
 
     public function order(): BelongsTo

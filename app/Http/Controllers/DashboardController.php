@@ -22,9 +22,9 @@ class DashboardController extends Controller
     public function pay(Request $request)
     {
         $createPayment = new MakePayment(new Pix());
-
+        
         $createPayment->create(
-            User::find(Auth::user()->id),
+            User::find(Auth::user()->id)->with('address')->get()->first(),
             Order::find($request->orderID)
         );
     }
