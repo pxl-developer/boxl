@@ -21,9 +21,4 @@ class Order extends Model
         'delivery_type',
         'id_user',
     ];
-
-    public function payment(): HasOne
-    {
-        return $this->hasOne(Payment::class, 'id', 'id_payment');
-    }
 }

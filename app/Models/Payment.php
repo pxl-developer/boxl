@@ -5,8 +5,8 @@ namespace App\Models;
 use App\Models\Order;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Payment extends Model
 {
@@ -21,9 +21,9 @@ class Payment extends Model
         'order_id',
     ];
 
-    public function order(): BelongsTo
+    public function order(): HasOne
     {
-        return $this->belongsTo(Order::class, 'id', 'id_payment');
+        return $this->hasOne(Order::class);
     }
 
     public function serializeDate(DateTimeInterface $date): string
