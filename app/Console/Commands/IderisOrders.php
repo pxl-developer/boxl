@@ -5,7 +5,11 @@ namespace App\Console\Commands;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Payment;
+use DomainException;
+use ErrorException;
+use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Mp;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Ideris;
@@ -31,49 +35,38 @@ class IderisOrders extends Command
      */
     public function handle(): void
     {
-        $getOrders = Ideris::get('/order/search',[
+        $iderisOrders = Ideris::get('/order/search',[
             'statusId' => 1007
-        ]);
-
-        if ( ! $getOrders->ok() ){
-            $this->error('Não foi possível receber os pedidos');
-            die;
-        }
+        ])->object();
         
-        foreach ( $getOrders->object()->obj as $orders ){
+        if ( !$iderisOrders ){
+            exit;
+        }
+
+        foreach ( $iderisOrders->obj as $orders ){
             
-            $getInfos = Ideris::get('/order/'.$orders->id)->object()->obj;
-            
-            $userData = User::where('authenticationId', $getInfos->authenticationId)->first();
-            
-            if ( $userData == null){
-                $this->error('Vendedor não cadastrado');
+            $iderisOrder = Ideris::get('/order/'.$orders->id)->object()->obj;
+
+            $userData = User::where('authentication_id', $iderisOrder->authenticationId)->get()->first();
+
+            if ( !$userData ){
                 continue;
             }
 
-            $code = $getInfos->id;
-            
-            if ( Order::where('code', $code)->count() >= 1 ){
-                $this->error('Erro ao gerar pedido');
+            try {
+                Order::create([
+                    'code' => $iderisOrder->id,
+                    'pack_id' => $iderisOrder->packId,
+                    'order_status' => $iderisOrder->statusDescription,
+                    'order_total_paid' => $iderisOrder->totalAmount,
+                    'order_fee' => $iderisOrder->feeOrder,
+                    'order_cost' => $iderisOrder->itemsCost,
+                    'delivery_type' => $iderisOrder->deliveryType,
+                    'id_user' => $userData->id
+                ]);
+            } catch (QueryException) {
                 continue;
             }
-            
-            if ( $getInfos->deliveryType == 'FLEX' ){
-                $orderFee = 15.90;
-            }else{
-                $orderFee = 0;
-            }
-
-            Order::create([
-                'code' => $code,
-                'order_status' => $getInfos->statusDescription,
-                'order_total_paid' => $getInfos->paidAmount,
-                'order_fee' => $orderFee,
-                'order_cost' => $getInfos->itemsCost,
-                'id_user' => $userData->id,
-            ]);
-
-            $this->info('Pedidos inseridos com êxito');
         }
     }
 }
