@@ -17,18 +17,18 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        $orders = Order::where('id_user', Auth::user()->id)
+        $orders = Order::where('user_id', Auth::user()->id)
             ->where('order_status', 'PEDIDO_ABERTO')
             ->get();
 
         $payments = Payment::whereHas('order', function ($query) {
-                $query->where('id_user', Auth::user()->id);
+                $query->where('user_id', Auth::user()->id);
             })
             ->where('transaction_status', 'pending')
             ->get();
 
         $paid = Payment::whereHas('order', function ($query) {
-                $query->where('id_user', Auth::user()->id);
+                $query->where('user_id', Auth::user()->id);
             })
             ->where('transaction_status', 'approved')
             ->get();
