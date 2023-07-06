@@ -18,5 +18,6 @@ class Address extends Model
         'neighborhood',
         'city',
         'uf',
+        'user_id'
     ];
 }
