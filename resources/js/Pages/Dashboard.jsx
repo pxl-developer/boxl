@@ -9,7 +9,7 @@ import { faCcVisa, faCcMastercard } from '@fortawesome/free-brands-svg-icons'
 
 import '../../css/dashboard.css'
 
-export default function Dashboard({ auth, orders, payments }) {
+export default function Dashboard({ auth, orders, payments, paid }) {
 
     const { post, setData, errors } = useForm({
         orderID: ''
@@ -89,7 +89,7 @@ export default function Dashboard({ auth, orders, payments }) {
         )
     }
 
-    function Historic() {
+    function Historic(paid) {
         return (
             <div className="history" key='{payment.id}'>
                 <div className="history-icon">
@@ -97,11 +97,11 @@ export default function Dashboard({ auth, orders, payments }) {
                 </div>
                 <div className="history-data">
                     <div className="payment-history-data">
-                        <h2>**** **** **** 4741</h2>
-                        <span>26/05/2023 09:35</span>
+                        <h2>{paid.paid.transaction_id}</h2>
+                        <span>{paid.paid.updated_at}</span>
                     </div>
                     <div className="payment-history-amount">
-                        <h2>25.85</h2>
+                        <h2>{paid.paid.amount}</h2>
                         <span>BRL</span>
                     </div>
                 </div>
@@ -191,7 +191,9 @@ export default function Dashboard({ auth, orders, payments }) {
                     <div className="dashboard-history fg-overflow-scroll">
                         <div className="history-content fg-padding">
                             <h1>Histórico de pagamentos</h1>
-                            <Historic />
+                            {paid.map((paymentsPaid) => (
+                                <Historic paid={paymentsPaid} />
+                            ))}
                         </div>
                     </div>
                 </div>

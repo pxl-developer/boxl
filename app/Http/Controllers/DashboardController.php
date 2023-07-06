@@ -27,9 +27,16 @@ class DashboardController extends Controller
             ->where('transaction_status', 'pending')
             ->get();
 
+        $paid = Payment::whereHas('order', function ($query) {
+                $query->where('id_user', Auth::user()->id);
+            })
+            ->where('transaction_status', 'approved')
+            ->get();
+            
         return Inertia::render('Dashboard', [
             'orders' => $orders,
-            'payments' => $payments
+            'payments' => $payments,
+            'paid' => $paid
         ]);
     }
     
