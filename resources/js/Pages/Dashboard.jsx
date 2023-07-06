@@ -9,10 +9,10 @@ import { faCcVisa, faCcMastercard } from '@fortawesome/free-brands-svg-icons'
 
 import '../../css/dashboard.css'
 
-export default function Dashboard({ auth, orders }) {
+export default function Dashboard({ auth, orders, payments }) {
 
     const { post, setData, errors } = useForm({
-        orderID: 1
+        orderID: ''
     })
     
     const generateCode = (e) => {
@@ -47,33 +47,16 @@ export default function Dashboard({ auth, orders }) {
         });
     };
 
-    function WaintigOrder(order){
-        return (
-            <div className="payment-block">
-                <div>
-                    <h1>{order.order.order_total_paid}</h1>
-                    <span>Frete = {order.order.order_fee} BRL</span>
-                    <span>{order.order.code}</span>
-                </div>
-                <div>
-                    <form method="post" onSubmit={generateCode}>
-                        <button className="payment-button" type="submit">Fazer Pagamento</button>
-                    </form>
-                </div>
-            </div>
-        )
-    }
-
-    function WaitingPayment() {
+    function WaitingPayment(payment) {
         return (
             <div className="payment-await">
                 <div>
-                    <h1>42.10</h1>
-                    <span>54478774542</span>
+                    <h1>{payment.payment.amount}</h1>
+                    <span>{payment.payment.transaction_id}</span>
                 </div>
                 <div>
                     <div className="payment-image">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Qrcode_wikipedia_fr_v2clean.png" />
+                        <img src={'data:image/png;base64,' + payment.payment.base64_image} />
                     </div>
                 </div>
             </div>
@@ -178,7 +161,18 @@ export default function Dashboard({ auth, orders }) {
                         <h1>Pedidos pendentes</h1>
                         <div className="dashboard-payment">
                             {orders.map((order) => (
-                                <WaintigOrder order={order} />
+                                <div className="payment-block">
+                                <div>
+                                    <h1>{order.order_cost}</h1>
+                                    <span>Frete = {order.order_fee} BRL</span>
+                                    <span>{order.code}</span>
+                                </div>
+                                <div>
+                                    <form method="post" onSubmit={generateCode}>
+                                        <button className="payment-button" type="submit" onClick={() => setData({orderID: order.id })}>Fazer Pagamento</button>
+                                    </form>
+                                </div>
+                            </div>
                             ))}
                         </div>
                     </div>
@@ -186,14 +180,17 @@ export default function Dashboard({ auth, orders }) {
                     <div>
                         <h1>Pagametos pendentes</h1>
                         <div className="dashboard-payment-await">
-                            <WaitingPayment />
+                            {payments.map((payment) => (
+                                <WaitingPayment payment={payment} />
+                            ))}
                         </div>
                     </div>
                 </div>
                 <div className="dashboard-historys">
-                    <Wallet />
+                    {/*<Wallet />*/}
                     <div className="dashboard-history fg-overflow-scroll">
                         <div className="history-content fg-padding">
+                            <h1>Histórico de pagamentos</h1>
                             <Historic />
                         </div>
                     </div>

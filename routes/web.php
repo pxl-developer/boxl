@@ -25,7 +25,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 
 Route::middleware('auth')->group(function () {
     Route::post('/generate', [DashboardController::class, 'pay'])->name('generateCode');
-    Route::get('/wallet', [DashboardController::class, 'wallet'])->name('wallet');
+    Route::get('/wallet', function () {
+        return Inertia::render('Wallet');
+    })->name('wallet');
 });
 
 require __DIR__.'/auth.php';
