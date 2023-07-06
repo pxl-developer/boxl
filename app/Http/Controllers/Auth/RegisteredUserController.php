@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class RegisteredUserController extends Controller
 {
@@ -33,7 +35,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'document' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:'.User::class,
@@ -42,17 +44,20 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $address_api = Http::get("https://viacep.com.br/ws/{$request->cep}/json/")->object();
+        $CEP = Http::get("https://viacep.com.br/ws/{$request->cep}/json/")->object();
 
-        $address = Address::create([
-            'cep' => $address_api->cep,
-            'street_name' => $address_api->logradouro,
-            'street_number' => '0',
-            'neighborhood' => $address_api->bairro,
-            'city' => $address_api->localidade,
-            'uf' => $address_api->uf,
-        ]);
+        $validator->after(function ($validator) use ($CEP){
+            if ( isset($CEP->erro) ){
+                $validator->errors()->add(
+                    'cep', 'Erro ao validar o CEP'
+                );
+            }
+        });
 
+        if ( $validator->fails() ){
+            return redirect('register')->withErrors($validator);
+        }
+        
         $user = User::create([
             'authentication_id' => $request->token,
             'name' => $request->name,
@@ -60,7 +65,16 @@ class RegisteredUserController extends Controller
             'phone' => $request->phone,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'id_address' => $address->id,
+        ]);
+        dd($CEP);
+        Address::create([
+            'cep' => $CEP->cep,
+            'street_name' => $CEP->logradouro,
+            'street_number' => '0',
+            'neighborhood' => $CEP->bairro,
+            'city' => $CEP->localidade,
+            'uf' => $CEP->uf,
+            'user_id' => $user->id
         ]);
 
         event(new Registered($user));
