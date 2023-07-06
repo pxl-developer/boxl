@@ -10,10 +10,10 @@ class Approved implements State
 {
     public function handle(Payment $payment)
     {
-        $orderID = $payment->with('order')->get()->first()->order->code;
+        $orderID = $payment->with('order')->get()->first();
 
         $updateData = array(
-            'orderId' => $orderID,
+            'orderId' => $orderID->order->code,
             'statusId' => 1008,
         );
         

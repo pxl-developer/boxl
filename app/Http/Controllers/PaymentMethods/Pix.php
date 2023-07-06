@@ -5,8 +5,6 @@ namespace App\Http\Controllers\PaymentMethods;
 use App\Models\User;
 use App\Models\Order;
 use Illuminate\Support\Facades\Mp;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\PaymentMethods\Method;
 use App\Models\Payment;
 
@@ -51,6 +49,8 @@ class Pix implements Method
             'transaction_status' => $payment->status,
             'order_id' => $this->order_id,
         ]);
+
+        Order::find($this->order_id)->update(['order_status' => 'AGUARDANDO_PAGAMENTO']);
     }
 
     public function cost(Order $amount): void
