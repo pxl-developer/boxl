@@ -101,13 +101,16 @@ export default function Dashboard({ auth, orders, payments, paid }) {
                         <span>{paid.paid.updated_at}</span>
                     </div>
                     <div className="payment-history-amount">
-                        <h2>{paid.paid.amount}</h2>
+                        <h2>{paid.paid.amount.toFixed(2)}</h2>
                         <span>BRL</span>
                     </div>
                 </div>
             </div>
         )
     }
+
+    const totalSales = Object.values(orders).reduce((total, currentElement) => total + currentElement.order_total_paid, 0)
+    const totalCost = Object.values(orders).reduce((total, currentElement) => total + currentElement.order_cost, 0)
 
     return (
         <AuthenticatedLayout user={auth.user}>
@@ -124,7 +127,7 @@ export default function Dashboard({ auth, orders, payments, paid }) {
                 <div className="cash-block">
                     <div className="cash-value">
                         <h1>
-                            121.75
+                            {totalSales.toFixed(2)}
                         </h1>
                         <span>BRL</span>
                     </div>
@@ -135,7 +138,7 @@ export default function Dashboard({ auth, orders, payments, paid }) {
                 <div className="cash-block">
                     <div className="cash-value">
                         <h1>
-                            104.00
+                            {totalCost.toFixed(2)}
                         </h1>
                         <span>BRL</span>
                     </div>
@@ -146,7 +149,7 @@ export default function Dashboard({ auth, orders, payments, paid }) {
                 <div className="cash-block">
                     <div className="cash-value">
                         <h1>
-                            15.50
+                            {(totalSales - totalCost).toFixed(2)}
                         </h1> 
                         <span>BRL</span>
                     </div>
@@ -161,18 +164,18 @@ export default function Dashboard({ auth, orders, payments, paid }) {
                         <h1>Pedidos pendentes</h1>
                         <div className="dashboard-payment">
                             {orders.map((order) => (
-                                <div className="payment-block">
-                                <div>
-                                    <h1>{order.order_cost}</h1>
-                                    <span>Frete = {order.order_fee} BRL</span>
-                                    <span>{order.code}</span>
+                                <div className="payment-block" key={order.id}>
+                                    <div>
+                                        <h1>{order.order_cost.toFixed(2)}</h1>
+                                        <span>Frete = {order.order_fee} BRL</span>
+                                        <span>{order.code}</span>
+                                    </div>
+                                    <div>
+                                        <form method="post" onSubmit={generateCode}>
+                                            <button className="payment-button" type="submit" onClick={() => setData({orderID: order.id })}>Fazer Pagamento</button>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div>
-                                    <form method="post" onSubmit={generateCode}>
-                                        <button className="payment-button" type="submit" onClick={() => setData({orderID: order.id })}>Fazer Pagamento</button>
-                                    </form>
-                                </div>
-                            </div>
                             ))}
                         </div>
                     </div>
@@ -181,7 +184,7 @@ export default function Dashboard({ auth, orders, payments, paid }) {
                         <h1>Pagametos pendentes</h1>
                         <div className="dashboard-payment-await">
                             {payments.map((payment) => (
-                                <WaitingPayment payment={payment} />
+                                <WaitingPayment payment={payment} key={payment.id}/>
                             ))}
                         </div>
                     </div>
@@ -192,7 +195,7 @@ export default function Dashboard({ auth, orders, payments, paid }) {
                         <div className="history-content fg-padding">
                             <h1>Histórico de pagamentos</h1>
                             {paid.map((paymentsPaid) => (
-                                <Historic paid={paymentsPaid} />
+                                <Historic paid={paymentsPaid} key={paymentsPaid.id}/>
                             ))}
                         </div>
                     </div>
