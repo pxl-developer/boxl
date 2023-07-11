@@ -34,7 +34,7 @@ class IderisToken extends Command
         ->post('https://apiv3.ideris.com.br/login');
         
         if ( $token->ok() ){
-            $Api = Api::where('user','FDB8B530FCD0904410BCE93CC700EAEEEE71A58E18507F33D54BF9778B7E9B7A')
+            Api::where('user','FDB8B530FCD0904410BCE93CC700EAEEEE71A58E18507F33D54BF9778B7E9B7A')
             ->update(['access_token' => $token->body()]);
 
             $this->info('Token atualizado com sucesso');

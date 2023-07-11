@@ -38,7 +38,7 @@ class IderisOrders extends Command
         $iderisOrders = Ideris::get('/order/search',[
             'statusId' => 1007
         ])->object();
-        
+
         if ( !$iderisOrders ){
             exit;
         }
@@ -52,7 +52,7 @@ class IderisOrders extends Command
             if ( !$userData ){
                 continue;
             }
-
+            
             try {
                 Order::create([
                     'code' => $iderisOrder->id,
@@ -62,8 +62,15 @@ class IderisOrders extends Command
                     'order_fee' => $iderisOrder->feeOrder,
                     'order_cost' => $iderisOrder->itemsCost,
                     'delivery_type' => $iderisOrder->deliveryType,
-                    'id_user' => $userData->id
+                    'user_id' => $userData->id
                 ]);
+
+                $updateData = array(
+                    'orderId' => $iderisOrder->id,
+                    'statusId' => 1337,
+                );
+                
+                Ideris::put('/order',$updateData);
             } catch (QueryException) {
                 continue;
             }
