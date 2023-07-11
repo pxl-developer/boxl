@@ -36,7 +36,8 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard', [
             'orders' => $orders,
             'payments' => $payments,
-            'paid' => $paid
+            'paid' => $paid,
+            'infos' => Order::where('user_id', Auth::user()->id)->get()
         ]);
     }
     

@@ -9,7 +9,7 @@ import { faCcVisa, faCcMastercard } from '@fortawesome/free-brands-svg-icons'
 
 import '../../css/dashboard.css'
 
-export default function Dashboard({ auth, orders, payments, paid }) {
+export default function Dashboard({ auth, orders, payments, paid, infos }) {
 
     const { post, setData, errors } = useForm({
         orderID: ''
@@ -91,7 +91,7 @@ export default function Dashboard({ auth, orders, payments, paid }) {
 
     function Historic(paid) {
         return (
-            <div className="history" key='{payment.id}'>
+            <div className="history">
                 <div className="history-icon">
                     <FontAwesomeIcon icon={faDollarSign} size="2x" />
                 </div>
@@ -109,8 +109,8 @@ export default function Dashboard({ auth, orders, payments, paid }) {
         )
     }
 
-    const totalSales = Object.values(orders).reduce((total, currentElement) => total + currentElement.order_total_paid, 0)
-    const totalCost = Object.values(orders).reduce((total, currentElement) => total + currentElement.order_cost, 0)
+    const totalSales = Object.values(infos).reduce((total, currentElement) => total + currentElement.order_total_paid, 0)
+    const totalCost = Object.values(infos).reduce((total, currentElement) => total + currentElement.order_cost, 0)
 
     return (
         <AuthenticatedLayout user={auth.user}>
