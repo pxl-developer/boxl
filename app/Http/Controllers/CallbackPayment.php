@@ -29,22 +29,24 @@ class CallbackPayment extends Controller
     {
         $callbackInfos = $request->all();
 
-        $paymentDB = Payment::where('transaction_id',$callbackInfos['data']['id']);
+        $paymentDB = Payment::where('transaction_id',$callbackInfos['data']['id'])->get()->first();
 
         $paymentStatus = Mp::get('/v1/payments/'.$callbackInfos['data']['id'])->object()->status;
     
-        if ( $paymentDB->get()->first()->transaction_status == $paymentStatus ){
+        if ( $paymentDB->transaction_status == $paymentStatus ){
             throw new DomainException('O pedido já se encontra nesse status');
         }
         
         if (isset($this->stateMap[$paymentStatus])) { 
 
             $this->state = new $this->stateMap[$paymentStatus];
-
+            
             $this->state->handle($paymentDB);
             
         } else {
-            return Response::json('Status não suportado', 404);
+            return response()->json([
+                "message" => "Método não suportado"
+            ], 401);
         }
     }
 }

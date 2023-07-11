@@ -22,6 +22,6 @@ class Approved implements State
 
         Order::find($orderID->order->id)->update(['order_status' => 'APROVADO']);
 
-        $payment->update(['transaction_status' => 'approved']);
+        Payment::where('transaction_id', $payment->transaction_id)->update(['transaction_status' => 'approved']);
     }
 }
