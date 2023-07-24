@@ -1,27 +1,37 @@
-import 'react-toastify/dist/ReactToastify.css';
-import { Head, useForm } from '@inertiajs/react';
-import { ToastContainer, toast } from 'react-toastify';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import 'react-toastify/dist/ReactToastify.css'
+import { Head, useForm } from '@inertiajs/react'
+import { ToastContainer, toast } from 'react-toastify'
+import PrimaryButton from '@/Components/PrimaryButton'
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDollarSign } from '@fortawesome/free-solid-svg-icons'
-import { faCcVisa, faCcMastercard } from '@fortawesome/free-brands-svg-icons'
+import { faCcVisa } from '@fortawesome/free-brands-svg-icons'
+import { initMercadoPago, createCardToken } from '@mercadopago/sdk-react'
 
 import '../../css/dashboard.css'
 
-export default function Dashboard({ auth, orders, payments, paid, infos }) {
+initMercadoPago('TEST-ab9b0a98-f794-4c2a-97bf-d50f0fba0f68', { locale: 'pt-BR' })
 
-    const { post, setData, errors } = useForm({
+export default function Dashboard({ auth, orders, payments, paid, infos, card }) {
+
+    const { post, setData, errors, processing } = useForm({
         orderID: ''
     })
     
-    const generateCode = (e) => {
-        e.preventDefault();
+    const payment = (e) => {
+        e.preventDefault()
 
-        post(route('generateCode'), {
+        const token = createCardToken({
+            cardId: card
+        })
+        
+        token.then(result => console.log(result))
+        /*
+        post(route('pay'), {
             preserveScroll: true,
             onSuccess: () => {
-                toast.success('QR code gerado com sucesso', {
+                toast.success('Pedido de pagamento gerado com sucesso', {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -30,7 +40,7 @@ export default function Dashboard({ auth, orders, payments, paid, infos }) {
                     draggable: true,
                     progress: undefined,
                     theme: "light",
-                });
+                })
             },
             onError: (errors) => {
                 toast.error(errors.message, {
@@ -42,10 +52,10 @@ export default function Dashboard({ auth, orders, payments, paid, infos }) {
                     draggable: true,
                     progress: undefined,
                     theme: "light",
-                });
+                })
             },
-        });
-    };
+        })*/
+    }
 
     function WaitingPayment(payment) {
         return (
@@ -171,8 +181,13 @@ export default function Dashboard({ auth, orders, payments, paid, infos }) {
                                         <span>{order.code}</span>
                                     </div>
                                     <div>
-                                        <form method="post" onSubmit={generateCode}>
-                                            <button className="payment-button" type="submit" onClick={() => setData({orderID: order.id })}>Fazer Pagamento</button>
+                                        <form method="post" onSubmit={payment}>
+                                            <PrimaryButton className="payment-button" disabled={processing} onClick={() => setData({orderID: order.id})}>
+                                                Pagar com Pix
+                                            </PrimaryButton>
+                                            <PrimaryButton className="payment-button" disabled={processing} onClick={() => setData({orderID: order.id})}>
+                                                Pagar com cartão
+                                            </PrimaryButton>
                                         </form>
                                     </div>
                                 </div>

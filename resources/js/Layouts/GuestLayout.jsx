@@ -1,22 +1,22 @@
-import Lottie from 'react-lottie';
-import shape from '../Animations/BG.json'
+/*import Lottie from 'react-lottie';
+import shape from '../Animations/BG.json'*/
 
 import '../../css/style.css'
 
 export default function Guest({ children }) {
-    const defaultOptions = {
+    /*const defaultOptions = {
         loop: true,
         autoplay: true, 
         animationData: shape,
         rendererSettings: {
             preserveAspectRatio: 'xMidYMid slice'
         }
-    };
+    };*/
 
     return (
         <>
             <div className="login-bg">
-                <Lottie options={defaultOptions} height={1000} width={1500} />
+                {/*<Lottie options={defaultOptions} height={1000} width={1500} />*/}
             </div>
 
             <div className="min-h-screen flex flex-col sm:justify-center items-center dark:bg-dots-lighter bg-boxl">

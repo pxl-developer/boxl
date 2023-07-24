@@ -16,8 +16,9 @@ class Approved implements State
         $updateData = array(
             'orderId' => $orderID->order->code,
             'statusId' => 1008,
+            'orderStatus' => 'Separação'
         );
-        
+
         Ideris::put('/order',$updateData);
 
         Order::find($orderID->order->id)->update(['order_status' => 'APROVADO']);

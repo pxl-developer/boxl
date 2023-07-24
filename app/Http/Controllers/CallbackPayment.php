@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use DomainException;
 use App\Models\Payment;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Mp;
 use App\Http\Controllers\PaymentStatus\State;
 use App\Http\Controllers\PaymentStatus\Pending;
@@ -25,7 +24,7 @@ class CallbackPayment extends Controller
         ]
     ){}
 
-    public function load(Request $request)
+    public function handle(Request $request)
     {
         $callbackInfos = $request->all();
 

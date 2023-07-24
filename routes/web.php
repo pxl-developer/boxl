@@ -3,8 +3,7 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\{ ProfileController, CallbackCreditCard, DashboardController };
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +22,10 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::post('/process_payment', [CallbackCreditCard::class, 'handle'])->name('saveCard');
+
 Route::middleware('auth')->group(function () {
-    Route::post('/generate', [DashboardController::class, 'pay'])->name('generateCode');
+    Route::post('/pay', [DashboardController::class, 'pay'])->name('pay');
     Route::get('/wallet', function () {
         return Inertia::render('Wallet');
     })->name('wallet');

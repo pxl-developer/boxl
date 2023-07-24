@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Inertia\Inertia;
-use Inertia\Response;
 use App\Models\Order;
+use Inertia\Response;
 use App\Models\Payment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Mp;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PaymentMethods\Pix;
 use App\Http\Controllers\PaymentMethods\MakePayment;
@@ -32,16 +32,29 @@ class DashboardController extends Controller
             })
             ->where('transaction_status', 'approved')
             ->get();
-            
+
+        $card = Mp::get('/v1/customers/'.Auth::user()->mp_identification.'/cards')->object();
+        
         return Inertia::render('Dashboard', [
             'orders' => $orders,
             'payments' => $payments,
             'paid' => $paid,
+            'card' => $card[0]->id,
             'infos' => Order::where('user_id', Auth::user()->id)->get()
         ]);
     }
     
-    public function pay(Request $request): void
+    public function pixPay(Request $request): void
+    {
+        $createPayment = new MakePayment(new Pix());
+        
+        $createPayment->create(
+            User::find(Auth::user()->id)->with('address')->get()->first(),
+            Order::find($request->orderID)
+        );
+    }
+
+    public function ccPay(Request $request): void
     {
         $createPayment = new MakePayment(new Pix());
         
