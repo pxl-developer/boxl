@@ -62,7 +62,7 @@ export default function Register() {
                         className="mt-1 block w-full"
                         autoComplete="doc"
                         onChange={(e) => setData('document', e.target.value)}
-                        maxlength="11"
+                        maxlength="14"
                         required
                     />
 
