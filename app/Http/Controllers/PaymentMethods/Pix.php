@@ -18,14 +18,14 @@ class Pix implements IMethod
     {
         $paymentRequest = [
             'transaction_amount' => $this->cost,
-            'description' => 'Venda Boxl',
+            'description' => "Venda Boxl - cliente: {$user->name}",
             'payment_method_id' => 'pix',
             'notification_url' => 'http://app.pxlsolutions.com.br/api/callback/payment',
             'payer' => [
                 'email' => $user->email,
                 'first_name' => $user->name,
                 'identification' => [
-                    'type' => 'CPF',
+                    'type' => $user->document_type,
                     'number' => $user->document
                 ],
                 'address' => [

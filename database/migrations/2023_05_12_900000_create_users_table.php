@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('authentication_id', 20);
             $table->string('name', 100);
             $table->string('document', 50)->unique();
+            $table->string('document_type', 5);
             $table->string('phone', 20);
             $table->string('email', 70);
             $table->string('password');

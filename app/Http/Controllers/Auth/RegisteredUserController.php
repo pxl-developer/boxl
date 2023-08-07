@@ -37,7 +37,7 @@ class RegisteredUserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'document' => 'required|string|max:255',
+            'document' => 'required|string|max:14',
             'email' => 'required|string|email|max:255|unique:'.User::class,
             'phone' => 'required|string|max:255',
             'cep' => 'required|string|max:9',
@@ -62,6 +62,7 @@ class RegisteredUserController extends Controller
             'authentication_id' => $request->token,
             'name' => $request->name,
             'document' => $request->document,
+            'document_type' => $request->document < 14 ? "CPF" : "CPNJ",
             'phone' => $request->phone,
             'email' => $request->email,
             'password' => Hash::make($request->password),

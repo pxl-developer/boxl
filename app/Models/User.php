@@ -24,6 +24,7 @@ class User extends Authenticatable
         'authentication_id',
         'name',
         'document',
+        'document_type',
         'phone',
         'email',
         'password',
