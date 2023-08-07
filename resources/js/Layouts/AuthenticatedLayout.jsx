@@ -37,7 +37,7 @@ export default function Authenticated({ user, children }) {
                     <NavLink href={route('dashboard')} active={route().current('dashboard')} as="button">
                         <FontAwesomeIcon icon={faBarsStaggered} size="xl" />
                     </NavLink>
-                    <NavLink href={route('wallet')} active={route().current('wallet')} as="button">
+                    <NavLink href={route('wallet.index')} active={route().current('wallet.index')} as="button">
                         <FontAwesomeIcon icon={faWallet} size="xl" />
                     </NavLink>
                 </div>

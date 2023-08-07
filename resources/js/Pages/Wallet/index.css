@@ -1,0 +1,108 @@
+.creditCard-container{
+    gap: 20px;
+    height: 90vh;
+    display: flex;
+    padding: 20px 0;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.card-container{
+    padding: 30px;
+    border-radius: 30px;
+    background-color: #252147;
+}
+.wallet{
+    margin: 20px;
+    display: flex;
+}
+.remove button{
+    border: none;
+    cursor: pointer;
+    transition: .3s;
+    margin-top: 30px;
+    padding: 15px 10px;
+    background-color: #e95252;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.remove button:hover{
+    background-color: #d83a3a;
+    color: #b1b1b1;
+}
+
+.edit-card{
+    transform: translateX(-20px);
+    z-index: -1;
+}
+.edit-card button:hover{
+    transform: translateX(20px);
+}
+
+.disabled-card button{border: none;
+    cursor: pointer;
+    transition: .3s;
+    cursor: default;
+    margin-top: 20px;
+    color: #5e5e5e;
+    padding: 15px 10px;
+    background-color: #835300;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.preferencial-button button{
+    border: none;
+    cursor: pointer;
+    transition: .3s;
+    margin-top: 20px;
+    padding: 15px 10px;
+    background-color: #FFA200;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.preferencial-button button:hover{
+    background-color: #ca8000;
+    color: #b1b1b1;
+}
+
+.dashboard-wallet{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    width: 400px;
+    border-radius: 15px;
+
+    z-index: 1;
+    overflow: hidden;
+    position: relative;
+    background-color: #6757E9;
+}
+.wallet-flag{
+    z-index: 1;
+    padding: 20px;
+}
+.wallet-info{
+    z-index: 1;
+    width: 100%;
+    padding: 20px;
+    text-transform: uppercase;
+}
+.wallet-info-date{
+    display: flex;
+    margin: 10px 0;
+    justify-content: space-between;
+}
+.wallet-bg{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+@media(max-width: 1024px){
+    .creditCard-container{
+        height: auto;
+        flex-direction: column;
+    }
+}

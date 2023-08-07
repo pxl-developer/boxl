@@ -27,9 +27,9 @@ class CallbackPayment extends Controller
     public function handle(Request $request)
     {
         $callbackInfos = $request->all();
-
+        
         $paymentDB = Payment::where('transaction_id',$callbackInfos['data']['id'])->get()->first();
-
+        
         $paymentStatus = Mp::get('/v1/payments/'.$callbackInfos['data']['id'])->object()->status;
     
         if ( $paymentDB->transaction_status == $paymentStatus ){

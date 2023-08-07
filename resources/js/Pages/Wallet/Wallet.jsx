@@ -1,16 +1,24 @@
-import { Head } from '@inertiajs/react'
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
-import { initMercadoPago, CardPayment } from '@mercadopago/sdk-react'
+import './index.css'
 
-import '../../css/wallet.css'
+import { Head } from '@inertiajs/react'
+import { Cards } from './Components/Cards'
+
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from 'react-toastify'
+
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
+
+import { initMercadoPago, CardPayment } from '@mercadopago/sdk-react'
+import { Success } from '../Messages/Success'
+import { Error } from '../Messages/Error'
 
 initMercadoPago('TEST-ab9b0a98-f794-4c2a-97bf-d50f0fba0f68', { locale: 'pt-BR' })
 
-export default function Wallet({ auth }) {
-
+export default function Wallet({ auth, cards }) {
     const initialization = {
         amount: 1,
-    };
+    }
+
     const customization = {
         visual: {
             style: {
@@ -32,10 +40,9 @@ export default function Wallet({ auth }) {
             minInstallments: 0,
             maxInstallments: 0,
         },
-    };
+    }
+
     const onSubmit = async (param) => {
-        // callback chamado ao clicar no botão de submissão dos dados
-        console.log(param)
         return new Promise((resolve, reject) => {
             fetch("/process_payment", {
                 method: "POST",
@@ -45,45 +52,45 @@ export default function Wallet({ auth }) {
                 },
                 body: JSON.stringify(param),
             })
-            .then((response) => response.json())
-            .then((response) => {
-                // receber o resultado do pagamento
-                console.log(response)
-                resolve();
+            .then(() => {
+                Success("Cartão cadastrado com sucesso")
+
+                setTimeout(function(){
+                    location.reload()
+                }, 5000)
+                
+                resolve()
             })
             .catch((error) => {
-                // lidar com a resposta de erro ao tentar criar o pagamento
-                console.log(error)
-                reject();
-            });
-        });
-    };
-    const onError = async (error) => {
-        // callback chamado para todos os casos de erro do Brick
-    };
-    const onReady = async () => {
-        /*
-          Callback chamado quando o Brick estiver pronto.
-          Aqui você pode ocultar loadings do seu site, por exemplo.
-        */
-    };
+                //
+                reject()
+            })
+        })
+    }
+
+    
 
     return (
         <AuthenticatedLayout user={auth.user}>
 
             <Head title="Carteira" />
+
+            <ToastContainer />
             
-            <div className='creditCard-container'>
-                <CardPayment
-                    initialization={initialization}
-                    customization={customization}
-                    onSubmit={onSubmit}
-                    onReady={onReady}
-                    onError={onError}
-                />
+            <div className="creditCard-container">
+                <div className='form'>
+                    <CardPayment initialization={initialization} customization={customization} onSubmit={onSubmit} />  
+                </div>
+                
+                <div className="card-container">
+                    <h1>Seus cartões</h1>
+                    {cards.map((card) => (
+                        <Cards card={card} key={card.id} unique={cards.length == 1 ? true : false} />
+                    ))}
+                </div>  
             </div>
             
         </AuthenticatedLayout>
-    );
+    )
 }
 

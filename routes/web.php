@@ -3,7 +3,8 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
-use App\Http\Controllers\{ ProfileController, CallbackCreditCard, DashboardController };
+use App\Http\Controllers\CreditCard\CallbackCreditCard;
+use App\Http\Controllers\{ DashboardController, WalletController, PayController };
 
 /*
 |--------------------------------------------------------------------------
@@ -25,10 +26,8 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 Route::post('/process_payment', [CallbackCreditCard::class, 'handle'])->name('saveCard');
 
 Route::middleware('auth')->group(function () {
-    Route::post('/pay', [DashboardController::class, 'pay'])->name('pay');
-    Route::get('/wallet', function () {
-        return Inertia::render('Wallet');
-    })->name('wallet');
+    Route::post('/pay', [PayController::class, 'pay'])->name('pay');
+    Route::resource('/wallet', WalletController::class);
 });
 
 require __DIR__.'/auth.php';

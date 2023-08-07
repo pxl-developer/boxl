@@ -6,12 +6,18 @@
     color: #FFFFFF;
 }
 
-
-
+.payment-button > div{
+    width: 60px;
+    height: 25px;
+    padding: 0 5px;
+    margin-left: 10px;
+    border-radius: 15px;
+    background-color: #252147;
+}
 .dashboard-cash-blocks{
     gap: 40px;
     display: flex;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     justify-content: space-between;
 }
 .cash-block{
@@ -99,10 +105,12 @@
 }
 .payment-button{
     width: 100%;
+    margin: 5px 0;
     cursor: pointer;
     transition: 0.3s;
     padding: 8px 20px;
     border-radius: 30px;
+    justify-content: center;
     text-transform: uppercase;
     border: solid 2px #6757E9;
     background-color: transparent;
@@ -154,6 +162,9 @@
 
 
 
+.hide{
+    display: none;
+}
 .dashboard-historys{
     flex: 1;
     gap: 40px;
@@ -165,6 +176,7 @@
     justify-content: space-between;
     flex-direction: column;
 
+    width: 400px;
     overflow: hidden;
     position: relative;
     background-color: #6757E9;

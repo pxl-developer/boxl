@@ -4,38 +4,30 @@ namespace App\Http\Controllers\PaymentMethods;
 
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Mp;
 use App\Http\Controllers\PaymentMethods\IMethod;
-use App\Models\Payment;
+use App\Http\Controllers\PaymentMethods\ICreditCard;
 
-class Pix implements IMethod
+class CreditCard implements IMethod, ICreditCard
 {
 
     private $cost;
     private $order_id;
+    private $token;
 
     public function generate(User $user): void
     {
         $paymentRequest = [
             'transaction_amount' => $this->cost,
+            'installments' => 1,
             'description' => 'Venda Boxl',
-            'payment_method_id' => 'pix',
+            'payment_method_id' => $user->credit_card->method_id,
             'notification_url' => 'http://app.pxlsolutions.com.br/api/callback/payment',
+            'token' => $this->token,
             'payer' => [
-                'email' => $user->email,
-                'first_name' => $user->name,
-                'identification' => [
-                    'type' => 'CPF',
-                    'number' => $user->document
-                ],
-                'address' => [
-                    'zip_code' => $user->address->cep,
-                    'street_name' => $user->address->street_name,
-                    'street_number' => $user->address->street_number,
-                    'neighborhood' => $user->address->neighborhood,
-                    'city' => $user->address->city,
-                    'federal_unit' => $user->address->uf
-                ]
+                'type' => 'customer',
+                'id' => $user->mp_identification
             ]
         ];
         
@@ -44,8 +36,6 @@ class Pix implements IMethod
         Payment::create([
             'transaction_id' => $payment->id,
             'amount' => $payment->transaction_amount,
-            'base64_image' => $payment->point_of_interaction->transaction_data->qr_code_base64,
-            'payment_pix' => $payment->point_of_interaction->transaction_data->qr_code,
             'transaction_status' => $payment->status,
             'order_id' => $this->order_id,
         ]);
@@ -63,5 +53,10 @@ class Pix implements IMethod
         }
 
         $this->cost = $amount->order_cost;
+    }
+
+    public function setToken(string $token): void
+    {
+        $this->token = $token;
     }
 }

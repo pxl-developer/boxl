@@ -11,17 +11,15 @@ class Approved implements State
 {
     public function handle(Payment $payment)
     {
-        $orderID = $payment->with('order')->get()->first();
-
         $updateData = array(
-            'orderId' => $orderID->order->code,
+            'orderId' => $payment->order->code,
             'statusId' => 1008,
             'orderStatus' => 'Separação'
         );
 
         Ideris::put('/order',$updateData);
 
-        Order::find($orderID->order->id)->update(['order_status' => 'APROVADO']);
+        Order::find($payment->order->id)->update(['order_status' => 'APROVADO']);
 
         Payment::where('transaction_id', $payment->transaction_id)->update(['transaction_status' => 'approved']);
     }
