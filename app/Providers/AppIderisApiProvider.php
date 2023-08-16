@@ -18,7 +18,7 @@ class AppIderisApiProvider extends ServiceProvider
                 'base_uri' => 'https://apiv3.ideris.com.br/'
             ])->withHeaders([
                 'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer '.Api::where('user','FDB8B530FCD0904410BCE93CC700EAEEEE71A58E18507F33D54BF9778B7E9B7A')->get()->first()->access_token
+                'Authorization' => 'Bearer '.Api::where('user','production')->get()->first()->access_token
             ]);
         });
     }

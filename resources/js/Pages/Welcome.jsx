@@ -1,6 +1,4 @@
 import { Link, Head } from '@inertiajs/react';
-import Lottie from 'react-lottie';
-import logo from '../Animations/site-logo-animated.json'
 
 import '../../css/style.css'
 import banner_1 from '../Images/banner-welcome-1.webp'

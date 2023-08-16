@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
 import { useForm } from '@inertiajs/react'
+import { useEffect, useRef, useState } from 'react'
 import PrimaryButton from '@/Components/PrimaryButton'
 import { initMercadoPago, createCardToken, SecurityCode } from '@mercadopago/sdk-react'
 

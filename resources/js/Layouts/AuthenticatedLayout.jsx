@@ -4,8 +4,7 @@ import logo from '../Images/logo_boxl.png'
 import NavLink from '@/Components/NavLink';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBarsStaggered } from '@fortawesome/free-solid-svg-icons'
-import { faWallet } from '@fortawesome/free-solid-svg-icons'
+import { faCreditCard, faQrcode, faBagShopping } from '@fortawesome/free-solid-svg-icons'
 
 import '../../css/layout.css'
 import '../../css/navigation.css'
@@ -34,11 +33,14 @@ export default function Authenticated({ user, children }) {
                 </div>
 
                 <div className="navigation-icons">
+                    <NavLink href={route('products.index')} active={route().current('products.index')} as="button">
+                        <FontAwesomeIcon icon={faBagShopping} size="xl" />
+                    </NavLink>
                     <NavLink href={route('dashboard')} active={route().current('dashboard')} as="button">
-                        <FontAwesomeIcon icon={faBarsStaggered} size="xl" />
+                        <FontAwesomeIcon icon={faQrcode} size="xl" />
                     </NavLink>
                     <NavLink href={route('wallet.index')} active={route().current('wallet.index')} as="button">
-                        <FontAwesomeIcon icon={faWallet} size="xl" />
+                        <FontAwesomeIcon icon={faCreditCard} size="xl" />
                     </NavLink>
                 </div>
                 <div>

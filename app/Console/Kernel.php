@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('token:ideris')->twiceDaily(1, 13);
+        $schedule->command('token:ideris')->everySixHours();
         $schedule->command('ideris:orders')->everyMinute();
     }
 
