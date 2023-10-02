@@ -40,7 +40,7 @@ class RegisteredUserController extends Controller
             'document' => 'required|string|max:14',
             'email' => 'required|string|email|max:255|unique:'.User::class,
             'phone' => 'required|string|max:255',
-            'cep' => 'required|string|max:9',
+            'cep' => 'required|string|min:8|max:8',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
