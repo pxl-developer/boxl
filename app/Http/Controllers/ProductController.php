@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Ideris;
+use App\Http\Controllers\Product\Product as ProductObject;
 
 class ProductController extends Controller
 {
@@ -13,7 +15,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Products');
+        $products = Product::paginate(10);
+
+        return Inertia::render('Products', [
+            'products' => $products,
+        ]);
     }
 
     /**
@@ -29,7 +35,12 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $infos = Ideris::get("listingModel/{$request->id}")->object()->obj;
+        
+        $product = new ProductObject($infos);
+        
+        $update = Ideris::post("listing/authentication/1",$product->product);
+        dd($update->json());
     }
 
     /**
@@ -37,8 +48,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $return = Ideris::get("listingModel/{$id}")->object();
-        dd($return);
+        //
     }
 
     /**

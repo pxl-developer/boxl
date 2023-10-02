@@ -1,0 +1,71 @@
+button, a{
+    cursor: pointer;
+}
+
+.product-block{
+    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.product-box{
+    width: 250px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 25px;
+    background-color: #252147;
+}
+.product-title{
+    margin: 20px;
+}
+.product-image{
+    text-align: center;
+}
+.product-image img{
+    width: 80%;
+    border-radius: 15px;
+}
+.product-price{
+    margin: 10px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.product-button-ml{
+    border: none;
+    color: #252147;
+    padding: 10px 25px;
+    border-radius: 30px;
+    background-color: #03ff03;
+}
+.page-arrows{
+    display: flex;
+    margin: 55px 0 0 0;
+    justify-content: space-around;
+}
+.page-arrows a{
+    padding: 20px;
+    color: #FFFFFF;
+    border-radius: 50px;
+    background-color: #252147;
+}
+
+.ReactModal__Overlay{
+    background-color: #00000096 !important;
+}
+.modal-form fieldset{
+    border: none;
+    padding: 8px 0 25px;
+}
+.modal-form-content{
+    gap: 0 20px;
+    display: flex;
+    justify-content: space-evenly;
+}
+.modal-form-content input[type=radio]{
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    margin-right: 10px;
+}

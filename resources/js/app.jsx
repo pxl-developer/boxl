@@ -1,6 +1,7 @@
 import './bootstrap';
 import '../css/app.css';
 
+import Modal from 'react-modal';
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
@@ -17,3 +18,5 @@ createInertiaApp({
         color: '#4B5563',
     },
 });
+
+Modal.setAppElement(document.body)
