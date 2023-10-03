@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Sku;
 use DomainException;
 use ErrorException;
 use Exception;
@@ -53,6 +54,14 @@ class IderisOrders extends Command
                 continue;
             }
             
+            if( $iderisOrder->itemsCost == 0 ){
+                foreach($iderisOrder->items as $item){
+                    $itemBD = Sku::where('sku', $item->sku);
+
+                    $iderisOrder->itemsCost = $itemBD->cost;
+                }
+            }
+
             try {
                 Order::create([
                     'code' => $iderisOrder->id,
