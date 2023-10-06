@@ -37,7 +37,7 @@ class IderisOrders extends Command
     public function handle(): void
     {
         $iderisOrders = Ideris::get('/order/search',[
-            'orderId' => 16868
+            'statusId' => 1007
         ])->object();
         
         if ( !$iderisOrders ){
