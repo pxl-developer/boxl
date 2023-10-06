@@ -37,13 +37,13 @@ class IderisOrders extends Command
     public function handle(): void
     {
         $iderisOrders = Ideris::get('/order/search',[
-            'statusId' => 1007
+            'orderId' => 16868
         ])->object();
-
+        
         if ( !$iderisOrders ){
             exit;
         }
-
+        
         foreach ( $iderisOrders->obj as $orders ){
             
             $iderisOrder = Ideris::get('/order/'.$orders->id)->object()->obj;
@@ -56,12 +56,12 @@ class IderisOrders extends Command
             
             if( $iderisOrder->itemsCost == 0 ){
                 foreach($iderisOrder->items as $item){
-                    $itemBD = Sku::where('sku', $item->sku);
-
+                    $itemBD = Sku::where('sku', $item->sku)->get()->first();
+                    
                     $iderisOrder->itemsCost = $itemBD->cost;
                 }
             }
-
+            
             try {
                 Order::create([
                     'code' => $iderisOrder->id,
@@ -73,7 +73,7 @@ class IderisOrders extends Command
                     'delivery_type' => $iderisOrder->deliveryType,
                     'user_id' => $userData->id
                 ]);
-
+                
                 $updateData = array(
                     'orderId' => $iderisOrder->id,
                     'statusId' => 1337,
